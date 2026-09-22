@@ -1,11 +1,10 @@
-import perro
+import squemas
 import time
+from pydantic import BaseModel, Field
 
-
-class Fight:
-    def __init__(self, dog1, dog2):
-        self.dog1 = dog1
-        self.dog2 = dog2
+class Fight(BaseModel):
+    dog1: squemas.dog
+    dog2: squemas.dog
 
     def present_fighters(self):
         print(f"¡Bienvenidos a la pelea entre {self.dog1.get_name()} y {self.dog2.get_name()}!")
