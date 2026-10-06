@@ -22,13 +22,15 @@ def pelea(perro1: dogs, perro2: dogs, db):
         if resultado_perr2[1]:
             #perro2murio
             print(f"{perro1.name} ha matado a {perro2.name}!!!")
+            aumentar_cuenta_ganadora(perro1,perro2,db)
             return perro1
         time.sleep(3)
         ataque(perro2,perro1,db)
         resultado_perr1 = revisar_muerte(perro1)
-        if resultado_perr2[1]:
+        if resultado_perr1[1]:
             #perro1 ha muerto!
             print(f"{perro2.name} ha matado a {perro1.name}!!!")
+            aumentar_cuenta_ganadora(perro2,perro1,db)
             return perro2
 
         time.sleep(2)
@@ -38,8 +40,8 @@ def pelea(perro1: dogs, perro2: dogs, db):
         time.sleep(2)
         print(resultado_perr2[0])
 
-    ganador = comparar_salud(perro1, perro2)
-    # aqui falta aumentar el contador de peleas ganadas
+    ganador, perdedor = comparar_salud(perro1, perro2)
+    aumentar_cuenta_ganadora(ganador, perdedor,db)
     present_winner(ganador)
 
     return ganador  
@@ -56,9 +58,9 @@ def presentar(perr1: dogs, perr2: dogs):
 
 def comparar_salud(dog1: dogs, dog2: dogs):
     if dog1.health > dog2.health:
-        return dog1
+        return dog1, dog2
     elif dog2.health > dog1.health:
-        return dog2
+        return dog2, dog1
     else:
         return None  # empate
 
@@ -94,4 +96,10 @@ def present_winner(perroganador: dogs):
     else:
         print(f"¡El ganador es {perroganador.name} con {perroganador.health} puntos de salud restantes y un poder de {perroganador.power}!")
 
- 
+def aumentar_cuenta_ganadora(perroganador: dogs, perroperdedor: dogs, db):
+    perroganador.won_battles += 1
+    perroganador.power = perroganador.power + round(perroperdedor.power * 0.2)
+    db.commit()
+    db.refresh(perroganador)
+
+    

@@ -1,3 +1,5 @@
+#legacy - usaba propiedades del squema envez de los del modelo
+
 import squemas
 import time
 from pydantic import BaseModel, Field

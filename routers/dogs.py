@@ -1,5 +1,6 @@
 from fastapi import APIRouter, Depends, HTTPException, status
 from sqlalchemy.orm import Session
+from sqlalchemy import update
 from database import get_db
 import models
 from squemas import dogResponse, dog
@@ -32,6 +33,15 @@ def create_dog(dog: dog, db: Session = Depends(get_db)):
     db.commit()
     db.refresh(db_dog)
     return db_dog
+
+@router.get("/restore")
+def restaurar_health(db: Session = Depends(get_db)):
+    db.execute(
+        update(models.dogs).values(health=100)
+    )
+    db.commit()
+
+    return 0
 
 @router.get("/{id}", response_model=dogResponse)
 def get_dog(id: int, db: Session = Depends(get_db)):
