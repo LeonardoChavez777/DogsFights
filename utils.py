@@ -102,4 +102,13 @@ def aumentar_cuenta_ganadora(perroganador: dogs, perroperdedor: dogs, db):
     db.commit()
     db.refresh(perroganador)
 
+def new_dog_gender_power(dog1,dog2):
+    gender = random.choice(["Male", "Female"])
+    if gender == "Male":
+        power = round((dog1.power + dog2.power) / 2)
+    else:
+        power = round((dog1.power + dog2.power) / 2 * random.uniform(0.8, 1.5))
+
+    return gender, power
+
     
