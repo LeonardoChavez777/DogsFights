@@ -1,9 +1,14 @@
-import time
-from peleas import Fight
-import perro
+from fastapi import FastAPI
+import routers.dogs
+import routers.fights
 
-Leo = perro.dog(name="Leo", gender="male")
-Vicky = perro.dog(name="Vicky", gender="female")
 
-Fight1 = Fight(Leo, Vicky)
-Fight1.start_fight()
+app = FastAPI()
+
+app.include_router(routers.dogs.router)
+app.include_router(routers.fights.router)
+
+@app.get("/")
+def read_root():
+    return {"Hello": "pelea de perros application!"}
+
